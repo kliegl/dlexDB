@@ -1,15 +1,20 @@
 Package: dlexDB
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Interface to the dlexDB Lexical Database
+Version: 0.1.0
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("Reinhold", "Kliegl", email = "reinhold.kliegl@uni-potsdam.de", role = c("aut", "cre"))
+Description: Provides an interface to the dlexDB corpus based on the DWDS core corpus. 
+    It automatically downloads, caches, and queries lexical statistics using DuckDB and Parquet files.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
+RoxygenNote: 7.3.1
 URL: https://github.com/kliegl/dlexDB
 BugReports: https://github.com/kliegl/dlexDB/issues
 Imports: 
-    DBI
+    DBI,
+    duckdb,
+    dplyr,
+    dbplyr,
+    rappdirs,
+    utils
