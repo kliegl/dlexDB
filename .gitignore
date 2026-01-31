@@ -4,3 +4,5 @@
 .httr-oauth
 .DS_Store
 .quarto
+*.parquet
+!dlex_de_demo_v1.parquet

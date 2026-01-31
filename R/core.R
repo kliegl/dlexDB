@@ -10,40 +10,49 @@ get_cache_dir <- function() {
   rappdirs::user_cache_dir("dlexDB")
 }
 
-#' Verbindung zur Datenbank herstellen (und Download falls nötig)
+#' Connect to dlexDB
+#'
+#' @param version Character. The version of the database to use (default: "v1").
+#' @param demo Logical. If TRUE, downloads a small demo dataset (1000 words) for testing.
 #' @export
-dlex_connect <- function() {
+dlex_connect <- function(version = "v1", demo = FALSE) {
   cache_dir <- get_cache_dir()
   if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
 
-  # URL zum Dataset (Hugging Face)
-  db_url <- "https://huggingface.co/datasets/rkliegl/dlexdb/resolve/main/data/typposlem.parquet"
-  db_file <- file.path(cache_dir, "typposlem.parquet")
+  # Define filenames based on version and mode
+  # Naming convention: dlex_de_[mode]_[version].parquet
+  mode_str <- if (demo) "demo" else "full"
+  filename <- paste0("dlex_de_", mode_str, "_", version, ".parquet")
 
-  # Download Logik (nur wenn Datei fehlt)
+  # Construct URL (pointing to the specific version folder on HF)
+  # Note: Ensure the file exists in the 'v1' folder on Hugging Face!
+  db_url <- paste0(
+    "https://huggingface.co/datasets/rkliegl/dlexdb/resolve/main/",
+    version, "/", filename
+  )
+
+  db_file <- file.path(cache_dir, filename)
+
+  # Download logic (same as before, just dynamic now)
   if (!file.exists(db_file)) {
-    message("Initialisiere dlexDB...")
-    message("Lade Kerndaten herunter. Dies geschieht nur einmal.")
+    message(paste("Initializing dlexDB", version, "(", mode_str, ")..."))
 
-    # Timeout temporär erhöhen für den Download
     old_timeout <- getOption("timeout")
     options(timeout = 3600)
     on.exit(options(timeout = old_timeout))
 
     tryCatch({
       utils::download.file(db_url, destfile = db_file, mode = "wb")
-      message("Download erfolgreich.")
+      message("Download successful.")
     }, error = function(e) {
       if (file.exists(db_file)) unlink(db_file)
-      stop("Fehler beim Download: ", e$message)
+      stop("Download failed: ", e$message)
     })
   }
 
-  # Verbindung herstellen (read_only für Sicherheit)
   con <- DBI::dbConnect(duckdb::duckdb(), read_only = TRUE)
-
-  # View registrieren
-  DBI::dbExecute(con, paste0("CREATE VIEW dlex AS SELECT * FROM '", db_file, "'"))
+  # We use the View name 'dlex' regardless of version, so downstream code works for both
+  DBI::dbExecute(con, paste0("CREATE OR REPLACE VIEW dlex AS SELECT * FROM '", db_file, "'"))
 
   return(con)
 }

@@ -2,10 +2,15 @@
 % Please edit documentation in R/core.R
 \name{dlex_connect}
 \alias{dlex_connect}
-\title{Verbindung zur Datenbank herstellen (und Download falls nötig)}
+\title{Connect to dlexDB}
 \usage{
-dlex_connect()
+dlex_connect(version = "v1", demo = FALSE)
+}
+\arguments{
+\item{version}{Character. The version of the database to use (default: "v1").}
+
+\item{demo}{Logical. If TRUE, downloads a small demo dataset (1000 words) for testing.}
 }
 \description{
-Verbindung zur Datenbank herstellen (und Download falls nötig)
+Connect to dlexDB
 }
