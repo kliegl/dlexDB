@@ -17,4 +17,6 @@ Imports:
     dplyr,
     dbplyr,
     rappdirs,
-    utils
+    utils,
+    shiny,
+    DT

@@ -3,6 +3,7 @@
 export(dlex_connect)
 export(dlex_lookup)
 export(dlex_regex)
+export(dlex_run_app)
 import(dplyr)
 importFrom(DBI,dbConnect)
 importFrom(DBI,dbDisconnect)
