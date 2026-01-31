@@ -5,6 +5,8 @@
 \title{Abruf lexikalischer Statistiken für eine Wortliste}
 \usage{
 dlex_lookup(word_list, db_con = NULL)
+
+dlex_lookup(word_list, db_con = NULL)
 }
 \arguments{
 \item{word_list}{Ein Character-Vektor mit den Wörtern.}
@@ -13,7 +15,11 @@ dlex_lookup(word_list, db_con = NULL)
 }
 \value{
 Ein Dataframe mit Statistiken.
+
+Ein Dataframe mit Statistiken.
 }
 \description{
+Abruf lexikalischer Statistiken für eine Wortliste
+
 Abruf lexikalischer Statistiken für eine Wortliste
 }
