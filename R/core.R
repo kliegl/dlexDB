@@ -98,7 +98,29 @@ dlex_lookup <- function(word_list, db_con = NULL) {
       Coltheart_Nei_HF_CumFreq_Abs = typ_nei_col_hf_cumfreq_abs,
       Coltheart_Nei_HF_CumFreq_Nor = typ_nei_col_hf_cumfreq_nor,
       Levenshtein_Nei_HF_CumFreq_Abs = typ_nei_lev_hf_cumfreq_abs,
-      Levenshtein_Nei_HF_CumFreq_Nor = typ_nei_lev_hf_cumfreq_nor
+      Levenshtein_Nei_HF_CumFreq_Nor = typ_nei_lev_hf_cumfreq_nor,
+      Fam_Abs = typ_fam_abs,
+      Fam_Nor = typ_fam_nor,
+      Inf_Abs = typ_inf_abs,
+      Inf_Nor = typ_inf_nor,
+      Div_Con_Abs = typ_div_con_abs,
+      Div_Con_Nor = typ_div_con_nor,
+      Div_Sen_Abs = typ_div_sen_abs,
+      Div_Sen_Nor = typ_div_sen_nor,
+      Init_Unigr_Abs = typ_init_unigr_abs,
+      Init_Unigr_Nor = typ_init_unigr_nor,
+      Init_Bigr_Abs = typ_init_bigr_abs,
+      Init_Bigr_Nor = typ_init_bigr_nor,
+      Init_Trigr_Abs = typ_init_trigr_abs,
+      Init_Trigr_Nor = typ_init_trigr_nor,
+      Uniq_Orth_Pos = typ_uniq_orth_strict_pos,
+      Uniq_Orth_Neg = typ_uniq_orth_strict_neg,
+      Uniq_Lemma_Pos = typ_uniq_lemma_strict_pos,
+      Uniq_Lemma_Neg = typ_uniq_lemma_strict_neg,
+      PIA_CondProb_Bigr = typ_pia_avgcondprob_bigr,
+      PIA_InfCont_Bigr = typ_pia_avginfcont_bigr,
+      PIA_CondProb_Trigr = typ_pia_avgcondprob_trigr,
+      PIA_InfCont_Trigr = typ_pia_avginfcont_trigr
     ) %>%
     dplyr::collect()
 
