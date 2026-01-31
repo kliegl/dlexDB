@@ -36,11 +36,15 @@ ui <- fluidPage(
       tabsetPanel(id = "tabs",
                   tabPanel("Lookup",
                            br(),
-                           DTOutput("table_lookup")
+                           DTOutput("table_lookup"),
+                           br(),
+                           downloadButton("download_lookup", "Download as TSV")
                   ),
                   tabPanel("Regex",
                            br(),
-                           DTOutput("table_regex")
+                           DTOutput("table_regex"),
+                           br(),
+                           downloadButton("download_regex", "Download as TSV")
                   )
       )
     )
@@ -73,6 +77,16 @@ server <- function(input, output, session) {
               filter = "top")
   })
 
+  # --- Download Handler for Lookup Data ---
+  output$download_lookup <- downloadHandler(
+    filename = function() {
+      "lookup_results.tsv"
+    },
+    content = function(file) {
+      write.table(lookup_data(), file, row.names = FALSE, sep = "\t")
+    }
+  )
+
   # --- Tab 2: Regex Logic ---
   regex_data <- eventReactive(input$btn_regex, {
     req(input$regex_pattern)
@@ -86,6 +100,16 @@ server <- function(input, output, session) {
               options = list(pageLength = 15, scrollX = TRUE),
               filter = "top")
   })
+
+  # --- Download Handler for Regex Data ---
+  output$download_regex <- downloadHandler(
+    filename = function() {
+      "regex_results.tsv"
+    },
+    content = function(file) {
+      write.table(regex_data(), file, row.names = FALSE, sep = "\t")
+    }
+  )
 }
 
 shinyApp(ui, server)
