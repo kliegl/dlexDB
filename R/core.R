@@ -93,48 +93,34 @@ dlex_lookup <- function(word_list, db_con = NULL) {
       Freq_Norm = typposlem_freq_nor,
       Freq_Abs = typposlem_freq_abs,
       Silben = typ_syls_cnt,
-      Orth_Nachbarn = typ_nei_lev_all_cnt_abs
-    ) %>%
-    dplyr::collect()
-
-  return(result)
-}#' Abruf lexikalischer Statistiken für eine Wortliste
-#' @param word_list Ein Character-Vektor mit den Wörtern.
-#' @param db_con Optional: Eine bestehende Verbindung.
-#' @return Ein Dataframe mit Statistiken.
-#' @export
-dlex_lookup <- function(word_list, db_con = NULL) {
-  # Auto-Connect
-  created_con <- FALSE
-  if (is.null(db_con)) {
-    db_con <- dlex_connect()
-    created_con <- TRUE
-  }
-
-  # Verbindung am Ende schließen, falls wir sie hier geöffnet haben
-  on.exit({
-    if (created_con) DBI::dbDisconnect(db_con)
-  })
-
-  # Input Tabelle registrieren
-  input_df <- data.frame(search_term = word_list, stringsAsFactors = FALSE)
-
-  # FIX: Falls die Tabelle vom letzten Klick noch da ist -> erst löschen!
-  try(duckdb::duckdb_unregister(db_con, "user_input"), silent = TRUE)
-
-  duckdb::duckdb_register(db_con, "user_input", input_df)
-
-  # Die eigentliche Abfrage
-  result <- dplyr::tbl(db_con, "user_input") %>%
-    dplyr::left_join(dplyr::tbl(db_con, "dlex"), by = c("search_term" = "typ_cit")) %>%
-    dplyr::select(
-      Wort = search_term,
-      PoS = pos_tag,
-      Lemma = lem_cit,
-      Freq_Norm = typposlem_freq_nor,
-      Freq_Abs = typposlem_freq_abs,
-      Silben = typ_syls_cnt,
-      Orth_Nachbarn = typ_nei_lev_all_cnt_abs
+      Syllabified_Word = typ_syls_cit,
+      Orth_Nachbarn = typ_nei_lev_all_cnt_abs,
+      Coltheart_Nei_HF_CumFreq_Abs = typ_nei_col_hf_cumfreq_abs,
+      Coltheart_Nei_HF_CumFreq_Nor = typ_nei_col_hf_cumfreq_nor,
+      Levenshtein_Nei_HF_CumFreq_Abs = typ_nei_lev_hf_cumfreq_abs,
+      Levenshtein_Nei_HF_CumFreq_Nor = typ_nei_lev_hf_cumfreq_nor,
+      Fam_Abs = typ_fam_abs,
+      Fam_Nor = typ_fam_nor,
+      Inf_Abs = typ_inf_abs,
+      Inf_Nor = typ_inf_nor,
+      Div_Con_Abs = typ_div_con_abs,
+      Div_Con_Nor = typ_div_con_nor,
+      Div_Sen_Abs = typ_div_sen_abs,
+      Div_Sen_Nor = typ_div_sen_nor,
+      Init_Unigr_Abs = typ_init_unigr_abs,
+      Init_Unigr_Nor = typ_init_unigr_nor,
+      Init_Bigr_Abs = typ_init_bigr_abs,
+      Init_Bigr_Nor = typ_init_bigr_nor,
+      Init_Trigr_Abs = typ_init_trigr_abs,
+      Init_Trigr_Nor = typ_init_trigr_nor,
+      Uniq_Orth_Pos = typ_uniq_orth_strict_pos,
+      Uniq_Orth_Neg = typ_uniq_orth_strict_neg,
+      Uniq_Lemma_Pos = typ_uniq_lemma_strict_pos,
+      Uniq_Lemma_Neg = typ_uniq_lemma_strict_neg,
+      PIA_CondProb_Bigr = typ_pia_avgcondprob_bigr,
+      PIA_InfCont_Bigr = typ_pia_avginfcont_bigr,
+      PIA_CondProb_Trigr = typ_pia_avgcondprob_trigr,
+      PIA_InfCont_Trigr = typ_pia_avginfcont_trigr
     ) %>%
     dplyr::collect()
 
