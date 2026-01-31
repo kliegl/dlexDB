@@ -17,7 +17,6 @@ DBI::dbDisconnect(con)
 
 # 4. Save as Parquet file locally
 # We use arrow here because it's the standard for writing parquet in R
-# If you don't have it: install.packages("arrow")
 arrow::write_parquet(toy_df, "dlex_de_demo_v1.parquet")
 
 message("Toy dataset created: dlex_de_demo_v1.parquet")
